@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Bonus.Splash" parent="@style/Theme.Bonus.NoActionBar">
+        <item name="android:windowBackground">@drawable/ic_splash</item>
+    </style>
+</resources>
