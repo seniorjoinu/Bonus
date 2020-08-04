@@ -1,6 +1,6 @@
 package es.bonus.android.data
 
-import es.bonus.android.components.TableData
+import es.bonus.android.features.Company
 import java.math.BigInteger
 
 
@@ -11,8 +11,6 @@ enum class UserEventType {
         fun random() = values().random()
     }
 }
-
-data class Company(val name: String)
 
 sealed class OwnedAsset {
     abstract val ofCompany: Company

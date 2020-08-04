@@ -1,13 +1,18 @@
 package es.bonus.android
 
+import android.content.Context
+import androidx.compose.Ambient
+import androidx.compose.Composable
+import androidx.compose.MutableState
+import androidx.compose.ambientOf
 import androidx.ui.text.font.ResourceFont
 import androidx.ui.text.font.fontFamily
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeRange
-import com.soywiz.klock.DateTimeSpan
-import com.soywiz.klock.MonthSpan
-import java.time.temporal.TemporalField
-import java.util.*
+import es.bonus.android.features.CompanyStore
+import es.bonus.android.features.EventStore
+import es.bonus.android.features.RoutingStore
+import es.bonus.android.features.UserStore
 
 object Fonts {
     val Inter = fontFamily(
@@ -36,3 +41,25 @@ fun prettyTimestamp(value: Long): String {
         else -> "just now"
     }
 }
+
+fun Context.getResourceBytes(resId: Int): ByteArray {
+    val res = resources.openRawResource(resId)
+    val resBytes = ByteArray(res.available())
+    res.read(resBytes)
+
+    return resBytes
+}
+
+object Ambients {
+    val RoutingStore = ambientOf<RoutingStore> { error("No routing store found") }
+    val UserStore = ambientOf<UserStore> { error("No user store found") }
+    val EventStore = ambientOf<EventStore> { error("No event store found") }
+    val CompanyStore = ambientOf<CompanyStore> { error("No company store found") }
+}
+
+@Composable
+val <T : Any> Ambient<MutableState<T>>.state: T
+    get() = current.state
+
+val <T : Any> MutableState<T>.state: T
+    get() = value

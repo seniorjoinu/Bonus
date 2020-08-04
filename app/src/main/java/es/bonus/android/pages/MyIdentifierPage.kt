@@ -14,10 +14,10 @@ import androidx.ui.text.style.TextAlign
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import androidx.ui.unit.sp
+import es.bonus.android.Ambients
 import es.bonus.android.components.QRCode
-import es.bonus.android.features.Ambients
 import es.bonus.android.features.createUserStore
-import es.bonus.android.features.state
+import es.bonus.android.state
 import es.bonus.android.ui.BonusTheme
 
 @Composable

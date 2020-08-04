@@ -13,6 +13,7 @@ import androidx.ui.text.style.TextAlign
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import androidx.ui.unit.sp
+import es.bonus.android.Ambients
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.components.Avatar
 import es.bonus.android.components.OwnedAssetView
@@ -21,6 +22,7 @@ import es.bonus.android.components.TableView
 import es.bonus.android.data.UserEventType
 import es.bonus.android.features.*
 import es.bonus.android.prettyTimestamp
+import es.bonus.android.state
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 
@@ -127,7 +129,7 @@ fun ProfilePage() {
 
         Button(
             shape = MaterialTheme.shapes.large,
-            onClick = {},
+            onClick = { routingStore.goTo(AppRoute.Profile.MyCompanies) },
             elevation = 0.dp,
             border = null,
             backgroundColor = Colors.darkBackground,

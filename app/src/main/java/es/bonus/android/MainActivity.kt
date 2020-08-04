@@ -2,7 +2,8 @@ package es.bonus.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.*
+import androidx.compose.Composable
+import androidx.compose.Providers
 import androidx.ui.core.setContent
 import androidx.ui.tooling.preview.Preview
 import es.bonus.android.components.LayoutWithMenuAndHeader
@@ -19,13 +20,16 @@ class MainActivity : AppCompatActivity() {
                 router = createRoutingStore()
                 val userStore = createUserStore()
                 val eventStore = createEventStore()
+                val companyStore = createCompanyStore()
 
                 eventStore.fetch()
+                companyStore.fetch()
 
                 Providers(
                     Ambients.RoutingStore provides router,
                     Ambients.UserStore provides userStore,
-                    Ambients.EventStore provides eventStore
+                    Ambients.EventStore provides eventStore,
+                    Ambients.CompanyStore provides companyStore
                 ) {
                     LayoutWithMenuAndHeader {
                         RenderRoutes()

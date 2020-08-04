@@ -4,8 +4,10 @@ import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.state
 import androidx.ui.core.ContextAmbient
+import es.bonus.android.Ambients
 import es.bonus.android.MainActivity
 import es.bonus.android.pages.*
+import es.bonus.android.state
 
 data class RoutingState(private val backStack: List<Route> = emptyList()) {
     constructor(vararg routes: Route) : this(routes.toMutableList())
@@ -58,6 +60,10 @@ sealed class AppRoute {
         object MyIdentifier : Profile(), Route {
             override val headerText: String = "My identifier"
         }
+
+        object MyCompanies : Profile(), Route {
+            override val headerText: String = "My companies"
+        }
     }
 
     sealed class MyBonuses : AppRoute() {
@@ -84,6 +90,7 @@ fun RenderRoutes() {
     when (Ambients.RoutingStore.state.currentRoute) {
         is AppRoute.Profile.Index -> ProfilePage()
         is AppRoute.Profile.MyIdentifier -> MyIdentifierPage()
+        is AppRoute.Profile.MyCompanies -> MyCompaniesPage()
 
         is AppRoute.MyBonuses.Index -> MyBonusesPage()
         is AppRoute.MyRewards.Index -> MyRewardsPage()

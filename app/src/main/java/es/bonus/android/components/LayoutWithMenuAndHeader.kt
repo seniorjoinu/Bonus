@@ -1,6 +1,8 @@
 package es.bonus.android.components
 
-import androidx.compose.*
+import androidx.compose.Composable
+import androidx.compose.Providers
+import androidx.compose.state
 import androidx.ui.core.Modifier
 import androidx.ui.core.tag
 import androidx.ui.foundation.Box
@@ -11,11 +13,11 @@ import androidx.ui.foundation.gestures.scrollable
 import androidx.ui.layout.*
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
-import es.bonus.android.*
-import es.bonus.android.features.Ambients
+import es.bonus.android.Ambients
+import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.features.AppRoute
 import es.bonus.android.features.createRoutingStore
-import es.bonus.android.features.state
+import es.bonus.android.state
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 

@@ -1,5 +1,6 @@
 package es.bonus.android.data
 
+import es.bonus.android.features.Company
 import java.math.BigInteger
 
 sealed class ValueAsset {

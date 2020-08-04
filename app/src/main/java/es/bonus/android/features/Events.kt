@@ -4,10 +4,12 @@ import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.state
 import com.soywiz.klock.DateTime
-import com.soywiz.klock.milliseconds
 import com.soywiz.klock.years
-import es.bonus.android.data.*
-import kotlinx.coroutines.delay
+import es.bonus.android.data.OwnedAsset
+import es.bonus.android.data.UserEvent
+import es.bonus.android.data.UserEventType
+import es.bonus.android.data.ValueAsset
+import es.bonus.android.state
 import java.util.*
 import kotlin.random.Random
 
@@ -38,9 +40,9 @@ fun EventStore.fetch() {
 
 // ------------------------------------------------------------------------------
 enum class Companies(val value: Company) {
-    McDoodles(Company("McDoodles")),
-    VapeShop(Company("VapeShop")),
-    BeutifulCompany(Company("Beautiful Company"));
+    McDoodles(Company(name = "McDoodles")),
+    VapeShop(Company(name = "VapeShop")),
+    BeutifulCompany(Company(name = "Beautiful Company"));
 
     companion object {
         fun random(): Company = values().random().value
