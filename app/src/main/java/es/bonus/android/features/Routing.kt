@@ -5,10 +5,7 @@ import androidx.compose.MutableState
 import androidx.compose.state
 import androidx.ui.core.ContextAmbient
 import es.bonus.android.MainActivity
-import es.bonus.android.pages.BonusExchangePage
-import es.bonus.android.pages.MyBonusesPage
-import es.bonus.android.pages.MyRewardsPage
-import es.bonus.android.pages.ProfilePage
+import es.bonus.android.pages.*
 
 data class RoutingState(private val backStack: List<Route> = emptyList()) {
     constructor(vararg routes: Route) : this(routes.toMutableList())
@@ -37,6 +34,7 @@ interface Route
 typealias RoutingStore = MutableState<RoutingState>
 
 fun RoutingStore.goTo(route: Route) {
+    println("Going to route $route")
     value = state.push(route)
 }
 
@@ -55,6 +53,10 @@ sealed class AppRoute {
     sealed class Profile : AppRoute() {
         object Index : Profile(), Route {
             override val headerText: String = "Profile"
+        }
+
+        object MyIdentifier : Profile(), Route {
+            override val headerText: String = "My identifier"
         }
     }
 
@@ -81,6 +83,8 @@ sealed class AppRoute {
 fun RenderRoutes() {
     when (Ambients.RoutingStore.state.currentRoute) {
         is AppRoute.Profile.Index -> ProfilePage()
+        is AppRoute.Profile.MyIdentifier -> MyIdentifierPage()
+
         is AppRoute.MyBonuses.Index -> MyBonusesPage()
         is AppRoute.MyRewards.Index -> MyRewardsPage()
         is AppRoute.BonusExchange.Index -> BonusExchangePage()

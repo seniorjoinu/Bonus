@@ -49,6 +49,7 @@ dependencies {
     implementation "androidx.ui:ui-tooling:$compose_version"
     implementation 'com.github.zsoltk:compose-router:0.14.0'
     implementation "com.soywiz.korlibs.klock:klock-jvm:$klockVersion"
+    implementation "me.dm7.barcodescanner:zxing:$zxingVersion"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

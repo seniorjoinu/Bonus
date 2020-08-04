@@ -9,7 +9,8 @@ import es.bonus.android.R
 
 data class UserState(
     val avatarImg: ImageAsset,
-    val nickName: String = "Anonymous"
+    val nickName: String = "Anonymous",
+    val id: String = "123456"
 )
 
 typealias UserStore = MutableState<UserState>

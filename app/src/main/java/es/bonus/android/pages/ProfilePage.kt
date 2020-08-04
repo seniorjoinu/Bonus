@@ -29,6 +29,7 @@ import es.bonus.android.ui.Colors
 fun ProfilePage() {
     val userStore = Ambients.UserStore.current
     val eventStore = Ambients.EventStore.current
+    val routingStore = Ambients.RoutingStore.current
 
     ConstraintLayout(
         ConstraintSet2 {
@@ -113,7 +114,7 @@ fun ProfilePage() {
 
         Button(
             shape = MaterialTheme.shapes.large,
-            onClick = {},
+            onClick = { routingStore.goTo(AppRoute.Profile.MyIdentifier) },
             elevation = 0.dp,
             backgroundColor = Colors.accent,
             modifier = Modifier.tag("showIdBtn")

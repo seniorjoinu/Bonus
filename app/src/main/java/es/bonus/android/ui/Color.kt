@@ -8,3 +8,10 @@ object Colors {
     val accent = Color(0xdd, 0x3c, 0x27)
     val gray1 = Color(0xc4, 0xc4, 0xc4)
 }
+
+object ColorsHex {
+    val darkBackground = 0x1A1A1A
+    val white1 = 0xFFFFFF
+    val accent = 0xDD3C27
+    val gray1 = 0xC4C4C4
+}
