@@ -16,10 +16,22 @@ val typography = Typography(
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Medium
         ),
+        h2 = TextStyle(
+                color = Colors.white1,
+                fontFamily = Fonts.Inter,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+        ),
         h3 = TextStyle(
                 color = Colors.white1,
                 fontFamily = Fonts.Inter,
                 fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+        ),
+        h4 = TextStyle(
+                color = Colors.white1,
+                fontFamily = Fonts.Inter,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
         ),
         h5 = TextStyle(

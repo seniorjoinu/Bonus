@@ -12,11 +12,11 @@ import java.math.BigInteger
 typealias CurrencyPerBonus = BigInteger
 
 data class Company(
-    val id: BigInteger = BigInteger.ONE,
+    val id: BigInteger = BigInteger.ZERO,
     val name: String = "",
     val logoBytes: ByteArray = ByteArray(0),
     val description: String = "",
-    val discount: CurrencyPerBonus = BigInteger.ONE
+    val discount: CurrencyPerBonus = BigInteger.ZERO
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -45,6 +45,7 @@ data class Company(
 
 data class CompanyState(
     val companies: Map<BigInteger, Company> = emptyMap(),
+    val currentCompany: Company = Company(),
     val fetching: Boolean = false,
     val error: Throwable? = null
 )
@@ -64,6 +65,10 @@ fun CompanyStore.fetch() {
     //} finally {
     value = state.copy(fetching = false)
     //}
+}
+
+fun CompanyStore.setCurrentCompany(company: Company) {
+    value = state.copy(currentCompany = company)
 }
 
 @Composable

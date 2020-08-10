@@ -64,6 +64,10 @@ sealed class AppRoute {
         object MyCompanies : Profile(), Route {
             override val headerText: String = "My companies"
         }
+
+        class Company(name: String) : Profile(), Route {
+            override val headerText: String = name
+        }
     }
 
     sealed class MyBonuses : AppRoute() {
@@ -91,6 +95,7 @@ fun RenderRoutes() {
         is AppRoute.Profile.Index -> ProfilePage()
         is AppRoute.Profile.MyIdentifier -> MyIdentifierPage()
         is AppRoute.Profile.MyCompanies -> MyCompaniesPage()
+        is AppRoute.Profile.Company -> CompanyPage()
 
         is AppRoute.MyBonuses.Index -> MyBonusesPage()
         is AppRoute.MyRewards.Index -> MyRewardsPage()
