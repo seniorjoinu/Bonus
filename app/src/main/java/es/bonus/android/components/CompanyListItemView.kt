@@ -15,10 +15,9 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import es.bonus.android.GLOBAL_HOR_PADDING
-import es.bonus.android.R
+import es.bonus.android.data.Company
 import es.bonus.android.data.bonuses
-import es.bonus.android.features.Company
-import es.bonus.android.getResourceBytes
+import es.bonus.android.features.Companies
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 
@@ -116,42 +115,20 @@ fun CompanyListItemView(
 @Composable
 @Preview
 fun CompanyListItemViewPreview() {
+    val context = ContextAmbient.current
+    Companies.init(context)
+
     BonusTheme {
-        val context = ContextAmbient.current
-        val mcDoodlesLogo = context.getResourceBytes(R.raw.mc_doodles_logo)
-        val beautifulCompLogo = context.getResourceBytes(R.raw.beautiful_company_logo)
-        val vapeShopLogo = context.getResourceBytes(R.raw.vapeshop_logo)
-
-        val comp1 = Company(
-            name = "Beautiful Company",
-            logoBytes = beautifulCompLogo,
-            description = "multi-level marketing company in beauty, house- hold, and personal care categories"
-        )
-
-        val comp2 = Company(
-            name = "VapeShop",
-            logoBytes = vapeShopLogo,
-            description = "around a third of all sales of e-cigarette products take place in vape shops"
-        )
-
-        val comp3 = Company(
-            name = "McDoodles",
-            logoBytes = mcDoodlesLogo,
-            description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018"
-        )
-
         Column {
-            CompanyListItemView(comp1)
-            CompanyListItemView(comp2) {
+            CompanyListItemView(Companies.mcDoodles)
+            CompanyListItemView(Companies.vapeShop) {
                 OwnedAssetView(
-                    ownedAsset = 200.bonuses.toOwnedAsset(comp2),
-                    showTooltip = false
+                    ownedAsset = 200.bonuses.toOwnedAsset()
                 )
             }
-            CompanyListItemView(comp3) {
+            CompanyListItemView(Companies.beatifulCompany) {
                 OwnedAssetView(
-                    ownedAsset = 200.bonuses.toOwnedAsset(comp3),
-                    showTooltip = false
+                    ownedAsset = 200.bonuses.toOwnedAsset()
                 )
             }
         }

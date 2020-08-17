@@ -19,7 +19,7 @@ fun MyCompaniesPage() {
     val companyStore = Ambients.CompanyStore.current
     val routingStore = Ambients.RoutingStore.current
 
-    val userCompanies = userStore.state.companyIds
+    val userCompanies = userStore.state.currentUser.companyIds
         .mapNotNull { companyStore.state.companies[it] }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -27,8 +27,8 @@ fun MyCompaniesPage() {
             CompanyListItemView(
                 company = company,
                 mod = Modifier.clickable {
-                    companyStore.setCurrentCompany(company)
                     routingStore.goTo(AppRoute.Profile.Company(company.name))
+                    companyStore.setCurrentCompany(company)
                 }
             )
         }

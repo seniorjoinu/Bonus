@@ -2,7 +2,7 @@ package es.bonus.android.pages
 
 import androidx.compose.Composable
 import androidx.compose.Providers
-import androidx.ui.core.Alignment
+import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.core.tag
 import androidx.ui.foundation.Text
@@ -12,16 +12,12 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.text.style.TextAlign
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import es.bonus.android.Ambients
 import es.bonus.android.GLOBAL_HOR_PADDING
+import es.bonus.android.asImageAsset
 import es.bonus.android.components.Avatar
-import es.bonus.android.components.OwnedAssetView
-import es.bonus.android.components.TableData
-import es.bonus.android.components.TableView
-import es.bonus.android.data.UserEventType
+import es.bonus.android.components.EventTable
 import es.bonus.android.features.*
-import es.bonus.android.prettyTimestamp
 import es.bonus.android.state
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
@@ -75,38 +71,13 @@ fun ProfilePage() {
         Modifier.fillMaxSize()
     ) {
         Avatar(
-            img = userStore.state.avatarImg,
-            nickName = userStore.state.nickName,
+            img = userStore.state.currentUser.avatarBytes.asImageAsset(),
+            nickName = userStore.state.currentUser.nickName,
             mod = Modifier.tag("avatar")
         )
 
         val data = eventStore.state.events
-        val entries = data.map { TableData.TwoColumn(it, it.timestamp, false) }
-
-        TableView(
-            header = "Recent history",
-            entries = entries,
-            mod = Modifier.tag("table")
-        ) { left, right, contrastColor ->
-            val sign = when (left.type) {
-                UserEventType.RECEIVE -> "+ "
-                UserEventType.USE -> "- "
-            }
-
-            Row(verticalGravity = Alignment.CenterVertically) {
-                Text(text = sign, style = MaterialTheme.typography.body1, color = contrastColor)
-                OwnedAssetView(
-                    ownedAsset = left.ownedAsset,
-                    textColor = contrastColor
-                )
-            }
-            Text(
-                text = " " + prettyTimestamp(right.toLong()),
-                style = MaterialTheme.typography.body1,
-                fontSize = 14.sp,
-                color = Colors.gray1
-            )
-        }
+        EventTable(data, EventEntity.USER, mod = Modifier.tag("table"))
 
         Text(
             text = "more...",
@@ -151,12 +122,16 @@ fun ProfilePage() {
 @Preview
 @Composable
 fun ProfilePagePreview() {
-    BonusTheme {
+    val context = ContextAmbient.current
+    Companies.init(context)
+    Users.init(context)
 
+    BonusTheme {
         val userStore = createUserStore()
         val eventStore = createEventStore()
 
-        eventStore.fetch()
+        userStore.setCurrentUser(Users.random())
+        eventStore.fetchEvents()
 
         Providers(
             Ambients.UserStore provides userStore,

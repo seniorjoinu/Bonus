@@ -15,16 +15,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Companies.init(this)
+        Users.init(this)
+
         setContent {
+            router = createRoutingStore()
+            val userStore = createUserStore()
+            val companyStore = createCompanyStore()
+            val eventStore = createEventStore()
+
+            userStore.setCurrentUser(Users.alexanderVtyurin)
+            companyStore.fetchCompanies()
+            eventStore.fetchEvents()
+
             BonusTheme {
-                router = createRoutingStore()
-                val userStore = createUserStore()
-                val eventStore = createEventStore()
-                val companyStore = createCompanyStore()
-
-                eventStore.fetch()
-                companyStore.fetch()
-
                 Providers(
                     Ambients.RoutingStore provides router,
                     Ambients.UserStore provides userStore,

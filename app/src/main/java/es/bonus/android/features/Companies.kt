@@ -1,22 +1,20 @@
 package es.bonus.android.features
 
+import android.content.Context
 import androidx.compose.Composable
 import androidx.compose.MutableState
 import androidx.compose.state
-import androidx.ui.core.ContextAmbient
 import es.bonus.android.R
 import es.bonus.android.getResourceBytes
 import es.bonus.android.state
 import java.math.BigInteger
-
-typealias CurrencyPerBonus = BigInteger
 
 data class Company(
     val id: BigInteger = BigInteger.ZERO,
     val name: String = "",
     val logoBytes: ByteArray = ByteArray(0),
     val description: String = "",
-    val discount: CurrencyPerBonus = BigInteger.ZERO
+    val discount: BigInteger = BigInteger.ZERO
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -52,19 +50,15 @@ data class CompanyState(
 
 typealias CompanyStore = MutableState<CompanyState>
 
-@Composable // remove composable
-fun CompanyStore.fetch() {
+fun CompanyStore.fetchCompanies() {
     value = state.copy(fetching = true)
 
-    // uncomment
-    //try {
-    val companies = getCompanies().associateBy { it.id }
-    value = state.copy(companies = companies, error = null)
-    //} catch (e: Throwable) {
-    //    value = state.copy(error = e)
-    //} finally {
-    value = state.copy(fetching = false)
-    //}
+    value = try {
+        val companies = Companies.all().associateBy { it.id }
+        state.copy(companies = companies, error = null, fetching = false)
+    } catch (e: Throwable) {
+        state.copy(error = e, fetching = false)
+    }
 }
 
 fun CompanyStore.setCurrentCompany(company: Company) {
@@ -72,33 +66,47 @@ fun CompanyStore.setCurrentCompany(company: Company) {
 }
 
 @Composable
-fun getCompanies(): List<Company> {
-    val context = ContextAmbient.current
-    val mcDoodlesLogo = context.getResourceBytes(R.raw.mc_doodles_logo)
-    val beautifulCompLogo = context.getResourceBytes(R.raw.beautiful_company_logo)
-    val vapeShopLogo = context.getResourceBytes(R.raw.vapeshop_logo)
-
-    return listOf(
-        Company(
-            id = 1.toBigInteger(),
-            name = "Beautiful Company",
-            logoBytes = beautifulCompLogo,
-            description = "multi-level marketing company in beauty, house- hold, and personal care categories"
-        ),
-        Company(
-            id = 2.toBigInteger(),
-            name = "VapeShop",
-            logoBytes = vapeShopLogo,
-            description = "around a third of all sales of e-cigarette products take place in vape shops"
-        ),
-        Company(
-            id = 3.toBigInteger(),
-            name = "McDoodles",
-            logoBytes = mcDoodlesLogo,
-            description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018"
-        )
-    )
-}
-
-@Composable
 fun createCompanyStore() = state { CompanyState() }
+
+enum class Companies {
+    McDoodles,
+    VapeShop,
+    BeautifulCompany;
+
+    companion object {
+        lateinit var mcDoodles: Company
+        lateinit var vapeShop: Company
+        lateinit var beatifulCompany: Company
+
+        fun init(context: Context) {
+            mcDoodles = Company(
+                id = BigInteger.ONE,
+                name = "McDoodles",
+                logoBytes = context.getResourceBytes(R.raw.mc_doodles_logo),
+                description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018"
+            )
+
+            vapeShop = Company(
+                id = BigInteger("2"),
+                name = "VapeShop",
+                logoBytes = context.getResourceBytes(R.raw.vapeshop_logo),
+                description = "around a third of all sales of e-cigarette products take place in vape shops"
+            )
+
+            beatifulCompany = Company(
+                id = BigInteger("3"),
+                name = "Beautiful Company",
+                logoBytes = context.getResourceBytes(R.raw.beautiful_company_logo),
+                description = "multi-level marketing company in beauty, house-hold, and personal care categories"
+            )
+        }
+
+        fun random(): Company = when (values().random()) {
+            McDoodles -> mcDoodles
+            VapeShop -> vapeShop
+            BeautifulCompany -> beatifulCompany
+        }
+
+        fun all(): List<Company> = listOf(mcDoodles, vapeShop, beatifulCompany)
+    }
+}

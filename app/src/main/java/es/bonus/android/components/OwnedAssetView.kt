@@ -17,7 +17,6 @@ import es.bonus.android.R
 import es.bonus.android.data.OwnedAsset
 import es.bonus.android.data.bonuses
 import es.bonus.android.data.rub
-import es.bonus.android.features.Company
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 
@@ -26,8 +25,7 @@ fun OwnedAssetView(
     ownedAsset: OwnedAsset,
     textColor: Color = Colors.white1,
     signColor: Color = Colors.accent,
-    mod: Modifier = Modifier,
-    showTooltip: Boolean = true
+    mod: Modifier = Modifier
 ) {
     Row(verticalGravity = Alignment.CenterVertically, modifier = mod) {
         when (ownedAsset) {
@@ -41,13 +39,6 @@ fun OwnedAssetView(
                     asset = vectorResource(id = R.drawable.ic_bonuses_sign),
                     tint = signColor
                 )
-                if (showTooltip) {
-                    Text(
-                        text = " of ${ownedAsset.ofCompany.name}",
-                        style = MaterialTheme.typography.body1,
-                        color = textColor
-                    )
-                }
             }
             is OwnedAsset.Discount.Currency -> {
                 Text(
@@ -60,13 +51,6 @@ fun OwnedAssetView(
                     tint = signColor,
                     modifier = Modifier.height(14.dp)
                 )
-                if (showTooltip) {
-                    Text(
-                        text = " discount in ${ownedAsset.ofCompany.name}",
-                        style = MaterialTheme.typography.body1,
-                        color = textColor
-                    )
-                }
             }
             is OwnedAsset.Discount.Percent -> {
                 Text(
@@ -75,17 +59,32 @@ fun OwnedAssetView(
                     color = textColor
                 )
                 Text(
-                    text = "%",
+                    text = "% ",
                     style = MaterialTheme.typography.subtitle1,
                     color = signColor
                 )
-                if (showTooltip) {
-                    Text(
-                        text = " discount in ${ownedAsset.ofCompany.name}",
-                        style = MaterialTheme.typography.body1,
-                        color = textColor
-                    )
-                }
+                Text(
+                    text = "discount",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = textColor
+                )
+            }
+            is OwnedAsset.GiftCoupon -> {
+                Text(
+                    text = "a ",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = textColor
+                )
+                Text(
+                    text = "gift ",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = signColor
+                )
+                Text(
+                    text = "coupon",
+                    style = MaterialTheme.typography.subtitle1,
+                    color = textColor
+                )
             }
         }
     }
@@ -96,13 +95,11 @@ fun OwnedAssetView(
 fun OwnedAssetViewPreview() {
     BonusTheme {
         Column {
-            val comp = Company(name = "Some Company")
-
-            OwnedAssetView(ownedAsset = 10.rub.toOwnedAsset(comp))
-            OwnedAssetView(ownedAsset = 340.rub.toOwnedAsset(comp))
-            OwnedAssetView(ownedAsset = 300.bonuses.toOwnedAsset(comp))
-            OwnedAssetView(ownedAsset = 1.bonuses.toOwnedAsset(comp))
-            OwnedAssetView(ownedAsset = OwnedAsset.Discount.Percent(25, comp))
+            OwnedAssetView(ownedAsset = 10.rub.toOwnedAsset())
+            OwnedAssetView(ownedAsset = 340.rub.toOwnedAsset())
+            OwnedAssetView(ownedAsset = 300.bonuses.toOwnedAsset())
+            OwnedAssetView(ownedAsset = 1.bonuses.toOwnedAsset())
+            OwnedAssetView(ownedAsset = OwnedAsset.Discount.Percent(25))
         }
     }
 }

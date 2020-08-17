@@ -30,10 +30,10 @@ fun MyIdentifierPage() {
         Column(horizontalGravity = Alignment.CenterHorizontally) {
             val userStore = Ambients.UserStore.current
 
-            QRCode(data = "{userId: \"$userStore.state.id\"}")
+            QRCode(data = "{userId: \"${userStore.state.currentUser.id}\"}")
             Text(
                 modifier = Modifier.padding(top = 35.dp),
-                text = userStore.state.id,
+                text = userStore.state.currentUser.id.toString(16).padStart(6, '0'),
                 style = MaterialTheme.typography.subtitle1,
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center

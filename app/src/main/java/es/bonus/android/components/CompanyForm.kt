@@ -8,6 +8,7 @@ import androidx.ui.core.Modifier
 import androidx.ui.core.tag
 import androidx.ui.foundation.Icon
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.drawBorder
 import androidx.ui.input.KeyboardType
 import androidx.ui.layout.*
 import androidx.ui.material.FilledTextField
@@ -17,7 +18,7 @@ import androidx.ui.savedinstancestate.savedInstanceState
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import es.bonus.android.R
-import es.bonus.android.features.Company
+import es.bonus.android.data.Company
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 import java.math.BigInteger
@@ -176,7 +177,11 @@ fun CompanyForm(
                 style = MaterialTheme.typography.h5,
                 modifier = Modifier.tag("logoHeader")
             )
-            ImageLoader(imageBytes = company.logoBytes, modifier = Modifier.tag("logoLoader")) {
+            ImageLoader(
+                imageBytes = company.logoBytes,
+                modifier = Modifier.tag("logoLoader")
+                    .drawBorder(2.dp, Colors.accent.copy(alpha = 0.3f))
+            ) {
                 onCompanyChange(company.copy(logoBytes = it))
             }
         }

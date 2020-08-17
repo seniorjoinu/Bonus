@@ -1,6 +1,5 @@
 package es.bonus.android.data
 
-import es.bonus.android.features.Company
 import java.math.BigInteger
 
 sealed class ValueAsset {
@@ -11,7 +10,7 @@ sealed class ValueAsset {
             return value.toString()
         }
 
-        fun toOwnedAsset(ofCompany: Company) = OwnedAsset.Bonus(this, ofCompany)
+        fun toOwnedAsset() = OwnedAsset.Bonus(this)
     }
 
     sealed class Currency : ValueAsset() {
@@ -32,7 +31,7 @@ sealed class ValueAsset {
                 return super.toString()
             }
 
-            fun toOwnedAsset(ofCompany: Company) = OwnedAsset.Discount.Currency(this, ofCompany)
+            fun toOwnedAsset() = OwnedAsset.Discount.Currency(this)
         }
     }
 }
@@ -48,3 +47,16 @@ val Int.rub: ValueAsset.Currency.Ruble
 
 val BigInteger.rub: ValueAsset.Currency.Ruble
     get() = ValueAsset.Currency.Ruble(this * BigInteger.TEN)
+
+
+sealed class OwnedAsset {
+    data class Bonus(val valueAsset: ValueAsset.Bonus) : OwnedAsset()
+
+    sealed class Discount : OwnedAsset() {
+        data class Currency(val valueAsset: ValueAsset.Currency) : Discount()
+
+        data class Percent(val value: Byte) : Discount()
+    }
+
+    data class GiftCoupon(val id: BigInteger) : OwnedAsset()
+}
