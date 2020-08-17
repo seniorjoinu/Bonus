@@ -10,5 +10,5 @@ Next generation loyalty system for everyone
 ### Quick roadmap
 * ✔️ Android to canister connector - https://github.com/seniorjoinu/candid-kt
 * ✔️ Mobile app design - https://www.figma.com/file/jOmQkVyGOBtu3PXZ0meYSE/Bonus.es-MVP-wireframe?node-id=0%3A1
-* 🚧 Mobile app implementation
-* ⏲️ Canister implementation
+* 🚧 Mobile app implementation - in progress
+* ⏲️ Canister implementation - waiting for Rust SDK
