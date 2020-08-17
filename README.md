@@ -8,7 +8,7 @@ Next generation loyalty system for everyone
 * (!) transfer or exchange your bonuses with other people
 
 ### Quick roadmap
-✔️ Android to canister connector - https://github.com/seniorjoinu/candid-kt
-✔️ Mobile app design - https://www.figma.com/file/jOmQkVyGOBtu3PXZ0meYSE/Bonus.es-MVP-wireframe?node-id=0%3A1
-🚧 Mobile app implementation
-⏲️ Canister implementation
+* ✔️ Android to canister connector - https://github.com/seniorjoinu/candid-kt
+* ✔️ Mobile app design - https://www.figma.com/file/jOmQkVyGOBtu3PXZ0meYSE/Bonus.es-MVP-wireframe?node-id=0%3A1
+* 🚧 Mobile app implementation
+* ⏲️ Canister implementation
