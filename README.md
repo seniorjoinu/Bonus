@@ -8,7 +8,7 @@ Next generation loyalty system for everyone
 * (!) transfer or exchange your bonuses with other people
 
 ### Quick roadmap
-* ✔️ Android to canister connector - https://github.com/seniorjoinu/candid-kt
+* ✔️ Android to canister connector - done (https://github.com/seniorjoinu/candid-kt)
 * ✔️ Mobile app design - done
 * 🚧 Mobile app implementation - in progress
 * ⏲️ Canister implementation - waiting for Rust SDK
