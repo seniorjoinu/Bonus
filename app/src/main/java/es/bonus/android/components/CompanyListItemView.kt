@@ -15,9 +15,9 @@ import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import es.bonus.android.GLOBAL_HOR_PADDING
-import es.bonus.android.data.Company
 import es.bonus.android.data.bonuses
 import es.bonus.android.features.Companies
+import es.bonus.android.features.Company
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 

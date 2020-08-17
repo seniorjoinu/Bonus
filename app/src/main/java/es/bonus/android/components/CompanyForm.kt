@@ -18,7 +18,7 @@ import androidx.ui.savedinstancestate.savedInstanceState
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import es.bonus.android.R
-import es.bonus.android.data.Company
+import es.bonus.android.features.Company
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 import java.math.BigInteger

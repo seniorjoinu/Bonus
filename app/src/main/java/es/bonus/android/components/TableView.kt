@@ -16,7 +16,7 @@ import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.dp
 import androidx.ui.unit.sp
 import es.bonus.android.GLOBAL_HOR_PADDING
-import es.bonus.android.data.EventType
+import es.bonus.android.features.EventType
 import es.bonus.android.features.getRandomEvents
 import es.bonus.android.prettyTimestamp
 import es.bonus.android.ui.BonusTheme

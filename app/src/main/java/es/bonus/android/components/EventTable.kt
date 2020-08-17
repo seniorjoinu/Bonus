@@ -10,13 +10,8 @@ import androidx.ui.layout.Row
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
 import androidx.ui.unit.sp
-import es.bonus.android.data.Event
-import es.bonus.android.data.EventType
 import es.bonus.android.data.OwnedAsset
-import es.bonus.android.features.Companies
-import es.bonus.android.features.EventEntity
-import es.bonus.android.features.Users
-import es.bonus.android.features.getRandomEvents
+import es.bonus.android.features.*
 import es.bonus.android.prettyTimestamp
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
