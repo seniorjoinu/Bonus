@@ -1,8 +1,9 @@
 package es.bonus.android.features
 
-import androidx.compose.Composable
-import androidx.compose.MutableState
-import androidx.compose.state
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.years
 import es.bonus.android.data.OwnedAsset
@@ -41,15 +42,17 @@ data class EventState(
 typealias EventStore = MutableState<EventState>
 
 @Composable
-fun createEventStore() = state { EventState() }
+fun createEventStore() = remember {
+    mutableStateOf(
+        EventState()
+    )
+}
 
 fun EventStore.fetchEvents(count: Int = 4) {
-    if (state.fetched) return // TODO: introduce fix
-
     value = state.copy(fetching = true)
 
     value = try {
-        val events = getRandomEvents(count)
+        val events = randomEvents // TODO
         state.copy(events = events, error = null, fetching = false, fetched = true)
     } catch (e: Throwable) {
         state.copy(error = e, fetching = false)
@@ -66,6 +69,7 @@ fun randomCurrency() = Random.nextInt(0, 20000).toBigInteger()
 fun randomPercent() = Random.nextInt(1, 100).toByte()
 fun randomTimestamp() = Random.nextLong((DateTime.now() - 1.years).unixMillisLong, Date().time)
 
+private var randomEvents = getRandomEvents(4)
 fun getRandomEvents(count: Int): List<Event> {
     return (0 until count)
         .map {

@@ -2,18 +2,18 @@ package es.bonus.android.components
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.compose.Composable
-import androidx.ui.core.ContentScale
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.core.tag
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Image
-import androidx.ui.graphics.asImageAsset
-import androidx.ui.layout.*
-import androidx.ui.res.vectorResource
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import es.bonus.android.R
 import es.bonus.android.getResourceBytes
 import es.bonus.android.ui.BonusTheme
@@ -39,7 +39,7 @@ fun ImageLoader(
         null
 
     ConstraintLayout(
-        ConstraintSet2 {
+        ConstraintSet {
             val image = createRefFor("image")
             val icon = createRefFor("icon")
 
@@ -60,18 +60,18 @@ fun ImageLoader(
                 end.linkTo(parent.end)
             }
         },
-        modifier = Modifier.width(imgSize.dp).height(imgSize.dp) + modifier
+        modifier = Modifier.width(imgSize.dp).height(imgSize.dp) then modifier
     ) {
         if (imgBlurredBitmap != null) {
             Image(
                 asset = imgBlurredBitmap,
-                modifier = Modifier.tag("image").width(imgSize.dp).height(imgSize.dp),
+                modifier = Modifier.layoutId("image").width(imgSize.dp).height(imgSize.dp),
                 contentScale = ContentScale.Fit
             )
         }
 
         Icon(
-            modifier = Modifier.tag("icon"),
+            modifier = Modifier.layoutId("icon"),
             asset = vectorResource(R.drawable.ic_baseline_save_alt_24),
             tint = Colors.white1
         )

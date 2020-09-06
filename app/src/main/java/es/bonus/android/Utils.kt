@@ -2,13 +2,13 @@ package es.bonus.android
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import androidx.compose.Ambient
-import androidx.compose.Composable
-import androidx.compose.MutableState
-import androidx.compose.ambientOf
-import androidx.ui.graphics.asImageAsset
-import androidx.ui.text.font.ResourceFont
-import androidx.ui.text.font.fontFamily
+import androidx.compose.runtime.Ambient
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.ambientOf
+import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.text.font.ResourceFont
+import androidx.compose.ui.text.font.fontFamily
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeRange
 import es.bonus.android.features.CompanyStore

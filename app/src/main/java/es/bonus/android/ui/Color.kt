@@ -1,6 +1,6 @@
 package es.bonus.android.ui
 
-import androidx.ui.graphics.Color
+import androidx.compose.ui.graphics.Color
 
 object Colors {
     val darkBackground = Color(0x1a, 0x1a, 0x1a)

@@ -1,19 +1,19 @@
 package es.bonus.android.components
 
 import android.graphics.BitmapFactory
-import androidx.compose.Composable
-import androidx.ui.core.ContentScale
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.core.tag
-import androidx.ui.foundation.Image
-import androidx.ui.foundation.Text
-import androidx.ui.graphics.asImageAsset
-import androidx.ui.layout.*
-import androidx.ui.material.Divider
-import androidx.ui.material.MaterialTheme
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageAsset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.data.bonuses
 import es.bonus.android.features.Companies
@@ -25,10 +25,10 @@ import es.bonus.android.ui.Colors
 fun CompanyListItemView(
     company: Company,
     mod: Modifier = Modifier,
-    headerAddon: @Composable() () -> Unit = {}
+    headerAddon: @Composable () -> Unit = {}
 ) {
     ConstraintLayout(
-        ConstraintSet2 {
+        ConstraintSet {
             val logo = createRefFor("logo")
             val header = createRefFor("header")
             val description = createRefFor("description")
@@ -75,7 +75,7 @@ fun CompanyListItemView(
                 bottom.linkTo(parent.bottom)
             }
         },
-        modifier = Modifier.fillMaxWidth() + mod
+        modifier = Modifier.fillMaxWidth().then(mod)
     ) {
         val img = BitmapFactory
             .decodeByteArray(company.logoBytes, 0, company.logoBytes.size)
@@ -84,11 +84,11 @@ fun CompanyListItemView(
         Image(
             asset = img,
             alpha = 0.15f,
-            modifier = Modifier.tag("logo").aspectRatio(1f),
+            modifier = Modifier.layoutId("logo").aspectRatio(1f),
             contentScale = ContentScale.Crop
         )
         Row(
-            modifier = Modifier.tag("header"),
+            modifier = Modifier.layoutId("header"),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -101,14 +101,14 @@ fun CompanyListItemView(
         Text(
             text = company.description,
             style = MaterialTheme.typography.body2,
-            modifier = Modifier.tag("description")
+            modifier = Modifier.layoutId("description")
         )
         Text(
             text = "Continue...",
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.tag("continueBtn")
+            modifier = Modifier.layoutId("continueBtn")
         )
-        Divider(color = Colors.accent, thickness = 2.dp, modifier = Modifier.tag("divider"))
+        Divider(color = Colors.accent, thickness = 2.dp, modifier = Modifier.layoutId("divider"))
     }
 }
 

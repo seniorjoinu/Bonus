@@ -1,9 +1,9 @@
 package es.bonus.android.components
 
 import android.graphics.Bitmap
-import androidx.compose.Composable
-import androidx.ui.foundation.Image
-import androidx.ui.graphics.asImageAsset
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.asImageAsset
 import androidx.ui.tooling.preview.Preview
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType

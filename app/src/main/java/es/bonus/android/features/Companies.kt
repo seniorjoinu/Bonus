@@ -1,9 +1,10 @@
 package es.bonus.android.features
 
 import android.content.Context
-import androidx.compose.Composable
-import androidx.compose.MutableState
-import androidx.compose.state
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import es.bonus.android.R
 import es.bonus.android.getResourceBytes
 import es.bonus.android.state
@@ -66,7 +67,11 @@ fun CompanyStore.setCurrentCompany(company: Company) {
 }
 
 @Composable
-fun createCompanyStore() = state { CompanyState() }
+fun createCompanyStore() = remember {
+    mutableStateOf(
+        CompanyState()
+    )
+}
 
 enum class Companies {
     McDoodles,

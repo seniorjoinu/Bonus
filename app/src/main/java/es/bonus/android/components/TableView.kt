@@ -1,20 +1,20 @@
 package es.bonus.android.components
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.tag
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.drawBackground
-import androidx.ui.graphics.Color
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.text.font.FontFamily
-import androidx.ui.text.font.FontWeight
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
-import androidx.ui.unit.sp
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.features.EventType
 import es.bonus.android.features.getRandomEvents
@@ -23,7 +23,7 @@ import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 import kotlin.random.Random
 
-typealias RowRenderer<T> = @Composable() RowScope.(T, Color) -> Unit
+typealias RowRenderer<T> = @Composable RowScope.(T, Color) -> Unit
 
 sealed class TableData<T : Any> {
     abstract val data: T
@@ -36,15 +36,13 @@ sealed class TableData<T : Any> {
 fun <T : Any> TableView(
     header: String,
     entries: Collection<TableData<T>>,
-    rowHorizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
-    rowVerticalGravity: Alignment.Vertical = Alignment.CenterVertically,
     rowHeight: Int = 30,
     tag: String = "",
     mod: Modifier = Modifier,
     rowRenderer: RowRenderer<T>
 ) {
     ConstraintLayout(
-        ConstraintSet2 {
+        ConstraintSet {
             val header = createRefFor("header")
 
             constrain(header) {
@@ -61,15 +59,15 @@ fun <T : Any> TableView(
                 end.linkTo(parent.end)
             }
         },
-        Modifier.fillMaxWidth() + mod
+        Modifier.fillMaxWidth().then(mod)
     ) {
         Text(
             text = header,
             style = MaterialTheme.typography.h3,
-            modifier = Modifier.padding(horizontal = GLOBAL_HOR_PADDING.dp) + Modifier.tag("header")
+            modifier = Modifier.padding(horizontal = GLOBAL_HOR_PADDING.dp).layoutId("header")
         )
 
-        Box(modifier = Modifier.tag("table")) {
+        Box(modifier = Modifier.layoutId("table")) {
             entries.forEachIndexed { index, entry ->
                 val bgColor = if (index % 2 == 0) Colors.white1 else Colors.darkBackground
                 val textColor = if (index % 2 == 0) Colors.darkBackground else Colors.white1
@@ -81,7 +79,7 @@ fun <T : Any> TableView(
                     if (shouldDrawTag) {
                         Column(
                             modifier = Modifier.fillMaxHeight()
-                                .drawBackground(Colors.accent)
+                                .background(color = Colors.accent)
                                 .padding(bottom = 5.dp)
                                 .width(tagWidth.dp),
                             horizontalGravity = Alignment.CenterHorizontally,
@@ -106,12 +104,12 @@ fun <T : Any> TableView(
                         GLOBAL_HOR_PADDING
 
                     Row(
-                        modifier = Modifier.drawBackground(bgColor)
+                        modifier = Modifier.background(color = bgColor)
                             .fillMaxWidth()
                             .height(rowHeight.dp)
                             .padding(start = padding.dp, end = GLOBAL_HOR_PADDING.dp),
-                        horizontalArrangement = rowHorizontalArrangement,
-                        verticalGravity = rowVerticalGravity
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalGravity = Alignment.CenterVertically
                     ) {
                         rowRenderer(entry.data, textColor)
                     }

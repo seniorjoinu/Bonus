@@ -1,39 +1,41 @@
 package es.bonus.android.components
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.core.clip
-import androidx.ui.core.tag
-import androidx.ui.foundation.Icon
-import androidx.ui.foundation.Image
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.drawBorder
-import androidx.ui.foundation.shape.corner.RoundedCornerShape
-import androidx.ui.graphics.ImageAsset
-import androidx.ui.layout.*
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.icons.Icons
-import androidx.ui.material.icons.outlined.Edit
-import androidx.ui.res.imageResource
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageAsset
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import es.bonus.android.R
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
 
 @Composable
 fun Avatar(img: ImageAsset, nickName: String, mod: Modifier = Modifier) {
-    val roundAvatarShape = RoundedCornerShape(img.height.dp)
+    val roundAvatarShape = RoundedCornerShape(50)
 
-    val clipAndBorderModifier = Modifier.clip(roundAvatarShape) + Modifier.drawBorder(2.dp, Colors.accent, roundAvatarShape)
-    val sizeModifier = Modifier.width(100.dp) + Modifier.height(100.dp)
-    val imgModifier = sizeModifier + clipAndBorderModifier
+    val clipAndBorderModifier = Modifier
+        .clip(roundAvatarShape)
+        .border(2.dp, color = Colors.accent, roundAvatarShape)
+    val sizeModifier = Modifier.width(100.dp).height(100.dp)
+    val imgModifier = sizeModifier then clipAndBorderModifier
 
     Column(modifier = mod, horizontalGravity = Alignment.CenterHorizontally) {
         Image(asset = img, modifier = imgModifier)
         Row(
-            modifier = Modifier.tag("nickName").padding(top = 10.dp),
+            modifier = Modifier.padding(top = 10.dp).layoutId("nickName"),
             verticalGravity = Alignment.CenterVertically
         ) {
             Text("$nickName ", style = MaterialTheme.typography.body1)

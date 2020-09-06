@@ -1,9 +1,10 @@
 package es.bonus.android.features
 
-import androidx.compose.Composable
-import androidx.compose.MutableState
-import androidx.compose.state
-import androidx.ui.core.ContextAmbient
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ContextAmbient
 import es.bonus.android.Ambients
 import es.bonus.android.MainActivity
 import es.bonus.android.pages.*
@@ -45,8 +46,10 @@ fun RoutingStore.goBack() {
 }
 
 @Composable
-fun createRoutingStore(defaultRoute: Route = AppRoute.Profile.Index) = state {
-    RoutingState(defaultRoute)
+fun createRoutingStore(defaultRoute: Route = AppRoute.Profile.Index) = remember {
+    mutableStateOf(
+        RoutingState(defaultRoute)
+    )
 }
 
 sealed class AppRoute {

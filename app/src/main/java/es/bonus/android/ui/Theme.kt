@@ -1,16 +1,11 @@
 package es.bonus.android.ui
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.drawBackground
-import androidx.ui.foundation.isSystemInDarkTheme
-import androidx.ui.layout.fillMaxSize
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.darkColorPalette
-import androidx.ui.material.lightColorPalette
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.runtime.Composable
 
-private val DarkColorPalette = darkColorPalette(
+
+private val DarkColorPalette = darkColors(
     background = Colors.darkBackground,
     primary = Colors.white1,
     primaryVariant = Colors.gray1,
@@ -18,7 +13,7 @@ private val DarkColorPalette = darkColorPalette(
 )
 
 @Composable
-fun BonusTheme(content: @Composable() () -> Unit) {
+fun BonusTheme(content: @Composable () -> Unit) {
     val colors = DarkColorPalette
 
     MaterialTheme(

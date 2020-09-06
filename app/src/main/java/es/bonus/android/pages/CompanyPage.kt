@@ -1,18 +1,18 @@
 package es.bonus.android.pages
 
-import androidx.compose.Composable
-import androidx.compose.Providers
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.core.tag
-import androidx.ui.foundation.Text
-import androidx.ui.layout.ConstraintLayout
-import androidx.ui.layout.ConstraintSet2
-import androidx.ui.layout.fillMaxSize
-import androidx.ui.layout.padding
-import androidx.ui.material.MaterialTheme
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.ConstraintLayout
+import androidx.compose.foundation.layout.ConstraintSet
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import es.bonus.android.Ambients
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.components.CompanyForm
@@ -24,7 +24,7 @@ import es.bonus.android.ui.BonusTheme
 @Composable
 fun CompanyPage() {
     ConstraintLayout(
-        ConstraintSet2 {
+        ConstraintSet {
             val settingsHeader = createRefFor("settingsHeader")
             val companyForm = createRefFor("companyForm")
             val table = createRefFor("table")
@@ -49,18 +49,19 @@ fun CompanyPage() {
         Text(
             text = "Settings",
             style = MaterialTheme.typography.h3,
-            modifier = Modifier.tag("settingsHeader").padding(horizontal = GLOBAL_HOR_PADDING.dp)
+            modifier = Modifier.layoutId("settingsHeader")
+                .padding(horizontal = GLOBAL_HOR_PADDING.dp)
         )
 
         CompanyForm(
             company = companiesStore.state.currentCompany,
-            modifier = Modifier.tag("companyForm").padding(horizontal = 15.dp)
+            modifier = Modifier.layoutId("companyForm").padding(horizontal = 15.dp)
         ) {
             companiesStore.setCurrentCompany(company = it)
         }
 
         val data = eventStore.state.events
-        EventTable(events = data, ofEntity = EventEntity.COMPANY, mod = Modifier.tag("table"))
+        EventTable(events = data, ofEntity = EventEntity.COMPANY, mod = Modifier.layoutId("table"))
     }
 }
 

@@ -1,17 +1,17 @@
 package es.bonus.android.pages
 
-import androidx.compose.Composable
-import androidx.compose.Providers
-import androidx.ui.core.ContextAmbient
-import androidx.ui.core.Modifier
-import androidx.ui.core.tag
-import androidx.ui.foundation.Text
-import androidx.ui.layout.*
-import androidx.ui.material.Button
-import androidx.ui.material.MaterialTheme
-import androidx.ui.text.style.TextAlign
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.ContextAmbient
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import androidx.ui.unit.dp
 import es.bonus.android.Ambients
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.asImageAsset
@@ -30,7 +30,7 @@ fun ProfilePage() {
     val routingStore = Ambients.RoutingStore.current
 
     ConstraintLayout(
-        ConstraintSet2 {
+        ConstraintSet {
             val avatar = createRefFor("avatar")
 
             constrain(avatar) {
@@ -73,16 +73,17 @@ fun ProfilePage() {
         Avatar(
             img = userStore.state.currentUser.avatarBytes.asImageAsset(),
             nickName = userStore.state.currentUser.nickName,
-            mod = Modifier.tag("avatar")
+            mod = Modifier.layoutId("avatar")
         )
 
         val data = eventStore.state.events
-        EventTable(data, EventEntity.USER, mod = Modifier.tag("table"))
+        println("events: $data")
+        EventTable(data, EventEntity.USER, mod = Modifier.layoutId("table"))
 
         Text(
             text = "more...",
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.tag("moreBtn")
+            modifier = Modifier.layoutId("moreBtn")
         )
 
         Button(
@@ -90,7 +91,7 @@ fun ProfilePage() {
             onClick = { routingStore.goTo(AppRoute.Profile.MyIdentifier) },
             elevation = 0.dp,
             backgroundColor = Colors.accent,
-            modifier = Modifier.tag("showIdBtn")
+            modifier = Modifier.layoutId("showIdBtn")
                 .padding(horizontal = GLOBAL_HOR_PADDING.dp)
                 .fillMaxWidth()
                 .height(50.dp)
@@ -104,7 +105,7 @@ fun ProfilePage() {
             elevation = 0.dp,
             border = null,
             backgroundColor = Colors.darkBackground,
-            modifier = Modifier.tag("myCompaniesBtn")
+            modifier = Modifier.layoutId("myCompaniesBtn")
                 .padding(horizontal = GLOBAL_HOR_PADDING.dp)
                 .fillMaxWidth()
                 .height(50.dp)

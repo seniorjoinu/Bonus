@@ -1,11 +1,11 @@
 package es.bonus.android.pages
 
-import androidx.compose.Composable
-import androidx.compose.Providers
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.clickable
-import androidx.ui.layout.Column
-import androidx.ui.layout.fillMaxSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.ui.Modifier
 import androidx.ui.tooling.preview.Preview
 import es.bonus.android.Ambients
 import es.bonus.android.components.CompanyListItemView
