@@ -6,16 +6,21 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import es.bonus.android.R
+import es.bonus.android.data.CompanyId
+import es.bonus.android.data.RewardId
+import es.bonus.android.data.UserId
 import es.bonus.android.getResourceBytes
 import es.bonus.android.state
 import java.math.BigInteger
 
 
 data class User(
-    val avatarBytes: ByteArray = ByteArray(0),
-    val nickName: String = "Anonymous",
-    val id: BigInteger = BigInteger.ONE,
-    val companyIds: List<BigInteger> = listOf(1.toBigInteger(), 2.toBigInteger(), 3.toBigInteger())
+    val id: UserId? = null,
+    val avatarBytes: ByteArray,
+    val username: String,
+    val ownedCompaniesIds: List<CompanyId>,
+    val bonuses: Map<CompanyId, BigInteger>,
+    val rewards: Map<CompanyId, List<RewardId>>
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -24,24 +29,24 @@ data class User(
         other as User
 
         if (!avatarBytes.contentEquals(other.avatarBytes)) return false
-        if (nickName != other.nickName) return false
+        if (username != other.username) return false
         if (id != other.id) return false
-        if (companyIds != other.companyIds) return false
+        if (ownedCompaniesIds != other.ownedCompaniesIds) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = avatarBytes.contentHashCode()
-        result = 31 * result + nickName.hashCode()
+        result = 31 * result + username.hashCode()
         result = 31 * result + id.hashCode()
-        result = 31 * result + companyIds.hashCode()
+        result = 31 * result + ownedCompaniesIds.hashCode()
         return result
     }
 }
 
 data class UserState(
-    val currentUser: User = User()
+    val currentUser: User? = null
 )
 
 typealias UserStore = MutableState<UserState>
@@ -68,16 +73,16 @@ enum class Users {
         fun init(context: Context) {
             alexanderVtyurin = User(
                 id = BigInteger.ONE,
-                nickName = "Alexander Vtyurin",
+                username = "Alexander Vtyurin",
                 avatarBytes = context.getResourceBytes(R.raw.avatar),
-                companyIds = listOf(BigInteger.ONE)
+                ownedCompaniesIds = listOf(BigInteger.ONE)
             )
 
             nikitaSamsonov = User(
                 id = BigInteger("2"),
-                nickName = "Nikita Samsonov",
+                username = "Nikita Samsonov",
                 avatarBytes = context.getResourceBytes(R.raw.avatar),
-                companyIds = listOf(BigInteger("2"), BigInteger("3"))
+                ownedCompaniesIds = listOf(BigInteger("2"), BigInteger("3"))
             )
         }
 

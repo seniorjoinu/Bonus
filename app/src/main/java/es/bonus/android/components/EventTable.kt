@@ -32,17 +32,17 @@ fun EventTable(events: List<Event>, ofEntity: EventEntity, mod: Modifier = Modif
             EventEntity.COMPANY -> when (event.type) {
                 EventType.COMPANY_BONUSES_ISSUED -> {
                     prefixText = "issued "
-                    suffixText = " to ${event.user.nickName}"
+                    suffixText = " to ${event.user.username}"
                 }
                 EventType.COMPANY_BONUSES_WITHDRAWN -> {
                     prefixText = "withdrawn "
-                    suffixText = " from ${event.user.nickName}"
+                    suffixText = " from ${event.user.username}"
                 }
                 EventType.CUSTOMER_REWARD_PURCHASED -> {
                     prefixText = ""
                     suffixText = when (event.ownedAsset) {
                         is OwnedAsset.Discount,
-                        is OwnedAsset.GiftCoupon -> " purchased by ${event.user.nickName}"
+                        is OwnedAsset.GiftCoupon -> " purchased by ${event.user.username}"
                         else -> ""
                     }
                 }
@@ -50,7 +50,7 @@ fun EventTable(events: List<Event>, ofEntity: EventEntity, mod: Modifier = Modif
                     prefixText = ""
                     suffixText = when (event.ownedAsset) {
                         is OwnedAsset.Discount,
-                        is OwnedAsset.GiftCoupon -> " used by ${event.user.nickName}"
+                        is OwnedAsset.GiftCoupon -> " used by ${event.user.username}"
                         else -> ""
                     }
                 }

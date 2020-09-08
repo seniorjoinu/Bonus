@@ -72,7 +72,7 @@ fun ProfilePage() {
     ) {
         Avatar(
             img = userStore.state.currentUser.avatarBytes.asImageAsset(),
-            nickName = userStore.state.currentUser.nickName,
+            nickName = userStore.state.currentUser.username,
             mod = Modifier.layoutId("avatar")
         )
 

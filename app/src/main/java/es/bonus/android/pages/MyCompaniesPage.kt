@@ -19,7 +19,7 @@ fun MyCompaniesPage() {
     val companyStore = Ambients.CompanyStore.current
     val routingStore = Ambients.RoutingStore.current
 
-    val userCompanies = userStore.state.currentUser.companyIds
+    val userCompanies = userStore.state.currentUser.ownedCompaniesIds
         .mapNotNull { companyStore.state.companies[it] }
 
     Column(modifier = Modifier.fillMaxSize()) {

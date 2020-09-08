@@ -6,16 +6,24 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import es.bonus.android.R
+import es.bonus.android.data.CompanyId
+import es.bonus.android.data.RewardImageId
+import es.bonus.android.data.UserId
 import es.bonus.android.getResourceBytes
 import es.bonus.android.state
 import java.math.BigInteger
 
+
 data class Company(
-    val id: BigInteger = BigInteger.ZERO,
-    val name: String = "",
-    val logoBytes: ByteArray = ByteArray(0),
-    val description: String = "",
-    val discount: BigInteger = BigInteger.ZERO
+    val id: CompanyId? = null,
+    val name: String,
+    val logoBytes: ByteArray,
+    val description: String,
+    // TODO: discount should be decimal
+    val discount: BigInteger,
+    val ownerId: UserId,
+    val rewardImagesIds: List<RewardImageId>,
+    val bonuses: Map<UserId, BigInteger>
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -88,7 +96,7 @@ enum class Companies {
                 id = BigInteger.ONE,
                 name = "McDoodles",
                 logoBytes = context.getResourceBytes(R.raw.mc_doodles_logo),
-                description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018"
+                description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018",
             )
 
             vapeShop = Company(

@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.years
+import es.bonus.android.data.CompanyId
 import es.bonus.android.data.OwnedAsset
+import es.bonus.android.data.UserId
 import es.bonus.android.data.ValueAsset
 import es.bonus.android.state
 import java.math.BigInteger
@@ -24,10 +26,14 @@ enum class EventType {
     }
 }
 
+
+// REFACTOR EVENTS AND ADD TO DUMMY SETUP
+
+
 data class Event(
     val type: EventType,
-    val company: Company,
-    val user: User,
+    val companyId: CompanyId,
+    val userId: UserId,
     val ownedAsset: OwnedAsset,
     val timestamp: BigInteger
 )
