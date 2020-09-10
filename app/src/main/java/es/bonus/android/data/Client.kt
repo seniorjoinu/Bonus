@@ -23,6 +23,8 @@ sealed class Result<out S, out F> {
 }
 
 interface IClient {
+    var currentUserId: UserId
+
     suspend fun login(username: String, password: String): Result<User, String>
 
     suspend fun registerUser(
@@ -90,9 +92,15 @@ interface IClient {
 
     suspend fun getRewardImages(ids: List<RewardImageId>): Result<List<RewardImage>, String>
 
-    suspend fun getRewards(ids: List<RewardId>): Result<List<Reward>, String>
+    suspend fun getRewards(
+        ids: List<RewardId>,
+        state: RewardState? = null
+    ): Result<List<Reward>, String>
 
-    suspend fun getExchangeOffers(ids: List<ExchangeOfferId>): Result<List<ExchangeOffer>, String>
+    suspend fun getExchangeOffers(
+        ids: List<ExchangeOfferId>,
+        state: ExchangeOfferState? = null
+    ): Result<List<ExchangeOffer>, String>
 
     suspend fun getEvents(
         userId: UserId? = null,

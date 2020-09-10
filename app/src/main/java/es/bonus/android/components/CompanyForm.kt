@@ -174,7 +174,19 @@ fun CompanyForm(
 @Composable
 fun CompanyFormPreview() {
     BonusTheme {
-        val company = remember { mutableStateOf(Company()) }
+        val company = remember {
+            mutableStateOf(
+                Company(
+                    name = "Example company",
+                    description = "Just for test",
+                    discount = 1.toBigInteger(),
+                    ownerId = 1.toBigInteger(),
+                    rewardImagesIds = emptyList(),
+                    bonuses = emptyMap(),
+                    logoBytes = ByteArray(0)
+                )
+            )
+        }
 
         CompanyForm(company.value) { company.value = it }
     }

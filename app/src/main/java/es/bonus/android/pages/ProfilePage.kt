@@ -17,10 +17,12 @@ import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.asImageAsset
 import es.bonus.android.components.Avatar
 import es.bonus.android.components.EventTable
+import es.bonus.android.data.dummySetup
 import es.bonus.android.features.*
 import es.bonus.android.state
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
@@ -71,8 +73,8 @@ fun ProfilePage() {
         Modifier.fillMaxSize()
     ) {
         Avatar(
-            img = userStore.state.currentUser.avatarBytes.asImageAsset(),
-            nickName = userStore.state.currentUser.username,
+            img = userStore.state.currentUser!!.avatarBytes.asImageAsset(),
+            nickName = userStore.state.currentUser!!.username,
             mod = Modifier.layoutId("avatar")
         )
 
@@ -126,13 +128,16 @@ fun ProfilePagePreview() {
     val context = ContextAmbient.current
     Companies.init(context)
     Users.init(context)
+    val (client1, _) = dummySetup()
 
     BonusTheme {
         val userStore = createUserStore()
         val eventStore = createEventStore()
 
         userStore.setCurrentUser(Users.random())
-        eventStore.fetchEvents()
+        runBlocking {
+            eventStore.fetchEvents { client1.getEvents(client1.currentUserId) }
+        }
 
         Providers(
             Ambients.UserStore provides userStore,

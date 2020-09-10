@@ -1,15 +1,13 @@
 package es.bonus.android.features
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import es.bonus.android.R
 import es.bonus.android.data.CompanyId
+import es.bonus.android.data.Result
 import es.bonus.android.data.RewardImageId
 import es.bonus.android.data.UserId
-import es.bonus.android.getResourceBytes
 import es.bonus.android.state
 import java.math.BigInteger
 
@@ -36,35 +34,41 @@ data class Company(
         if (!logoBytes.contentEquals(other.logoBytes)) return false
         if (description != other.description) return false
         if (discount != other.discount) return false
+        if (ownerId != other.ownerId) return false
+        if (rewardImagesIds != other.rewardImagesIds) return false
+        if (bonuses != other.bonuses) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = id.hashCode()
+        var result = id?.hashCode() ?: 0
         result = 31 * result + name.hashCode()
         result = 31 * result + logoBytes.contentHashCode()
         result = 31 * result + description.hashCode()
         result = 31 * result + discount.hashCode()
+        result = 31 * result + ownerId.hashCode()
+        result = 31 * result + rewardImagesIds.hashCode()
+        result = 31 * result + bonuses.hashCode()
         return result
     }
 }
 
 data class CompanyState(
-    val companies: Map<BigInteger, Company> = emptyMap(),
-    val currentCompany: Company = Company(),
+    val companies: Map<CompanyId, Company> = emptyMap(),
+    val currentCompany: Company? = null,
     val fetching: Boolean = false,
     val error: Throwable? = null
 )
 
 typealias CompanyStore = MutableState<CompanyState>
 
-fun CompanyStore.fetchCompanies() {
+suspend fun CompanyStore.fetchCompanies(getCompanies: suspend () -> Result<List<Company>, String>) {
     value = state.copy(fetching = true)
 
     value = try {
-        val companies = Companies.all().associateBy { it.id }
-        state.copy(companies = companies, error = null, fetching = false)
+        val companies = getCompanies().unwrap()
+        state.copy(companies = companies.associateBy { it.id!! }, error = null, fetching = false)
     } catch (e: Throwable) {
         state.copy(error = e, fetching = false)
     }
@@ -79,47 +83,4 @@ fun createCompanyStore() = remember {
     mutableStateOf(
         CompanyState()
     )
-}
-
-enum class Companies {
-    McDoodles,
-    VapeShop,
-    BeautifulCompany;
-
-    companion object {
-        lateinit var mcDoodles: Company
-        lateinit var vapeShop: Company
-        lateinit var beatifulCompany: Company
-
-        fun init(context: Context) {
-            mcDoodles = Company(
-                id = BigInteger.ONE,
-                name = "McDoodles",
-                logoBytes = context.getResourceBytes(R.raw.mc_doodles_logo),
-                description = "the world's largest restaurant chain by revenue, serving over 69 million customers daily in over 100 countries across 37,855 outlets as of 2018",
-            )
-
-            vapeShop = Company(
-                id = BigInteger("2"),
-                name = "VapeShop",
-                logoBytes = context.getResourceBytes(R.raw.vapeshop_logo),
-                description = "around a third of all sales of e-cigarette products take place in vape shops"
-            )
-
-            beatifulCompany = Company(
-                id = BigInteger("3"),
-                name = "Beautiful Company",
-                logoBytes = context.getResourceBytes(R.raw.beautiful_company_logo),
-                description = "multi-level marketing company in beauty, house-hold, and personal care categories"
-            )
-        }
-
-        fun random(): Company = when (values().random()) {
-            McDoodles -> mcDoodles
-            VapeShop -> vapeShop
-            BeautifulCompany -> beatifulCompany
-        }
-
-        fun all(): List<Company> = listOf(mcDoodles, vapeShop, beatifulCompany)
-    }
 }

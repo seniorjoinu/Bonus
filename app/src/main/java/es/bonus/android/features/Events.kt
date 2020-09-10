@@ -4,39 +4,50 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.years
-import es.bonus.android.data.CompanyId
-import es.bonus.android.data.OwnedAsset
-import es.bonus.android.data.UserId
-import es.bonus.android.data.ValueAsset
+import es.bonus.android.data.*
 import es.bonus.android.state
 import java.math.BigInteger
-import java.util.*
-import kotlin.random.Random
 
-enum class EventType {
-    COMPANY_BONUSES_ISSUED,
-    COMPANY_BONUSES_WITHDRAWN,
-    CUSTOMER_REWARD_PURCHASED,
-    CUSTOMER_REWARD_USED;
+typealias EventId = Id
 
-    companion object {
-        fun random() = values().random()
-    }
+sealed class Event {
+    data class BonusesIssued(
+        val id: EventId,
+        val fromCompanyId: CompanyId,
+        val toUserId: UserId,
+        val amount: BigInteger,
+        val timestamp: BigInteger
+    ) : Event()
+
+    data class BonusesTransferred(
+        val id: EventId,
+        val fromUserId: UserId,
+        val toUserId: UserId,
+        val ofCompanyId: CompanyId,
+        val amount: BigInteger,
+        val timestamp: BigInteger
+    ) : Event()
+
+    data class RewardPurchased(
+        val id: EventId,
+        val rewardId: RewardId,
+        val price: BigInteger,
+        val timestamp: BigInteger
+    ) : Event()
+
+    data class RewardAccepted(
+        val id: EventId,
+        val rewardId: RewardId,
+        val timestamp: BigInteger
+    ) : Event()
+
+    data class ExchangeOfferAccepted(
+        val id: EventId,
+        val offerId: ExchangeOfferId,
+        val byUserId: UserId,
+        val timestamp: BigInteger
+    ) : Event()
 }
-
-
-// REFACTOR EVENTS AND ADD TO DUMMY SETUP
-
-
-data class Event(
-    val type: EventType,
-    val companyId: CompanyId,
-    val userId: UserId,
-    val ownedAsset: OwnedAsset,
-    val timestamp: BigInteger
-)
 
 data class EventState(
     val events: List<Event> = emptyList(),
@@ -49,16 +60,17 @@ typealias EventStore = MutableState<EventState>
 
 @Composable
 fun createEventStore() = remember {
-    mutableStateOf(
-        EventState()
-    )
+    mutableStateOf(EventState())
 }
 
-fun EventStore.fetchEvents(count: Int = 4) {
+suspend fun EventStore.fetchEvents(
+    count: Int = 4,
+    getEvents: suspend () -> Result<List<Event>, String>
+) {
     value = state.copy(fetching = true)
 
     value = try {
-        val events = randomEvents // TODO
+        val events = getEvents().unwrap().takeLast(count)
         state.copy(events = events, error = null, fetching = false, fetched = true)
     } catch (e: Throwable) {
         state.copy(error = e, fetching = false)
@@ -67,40 +79,4 @@ fun EventStore.fetchEvents(count: Int = 4) {
 
 enum class EventEntity {
     USER, COMPANY
-}
-
-// ------------------------------------------------------------------------------
-
-fun randomCurrency() = Random.nextInt(0, 20000).toBigInteger()
-fun randomPercent() = Random.nextInt(1, 100).toByte()
-fun randomTimestamp() = Random.nextLong((DateTime.now() - 1.years).unixMillisLong, Date().time)
-
-private var randomEvents = getRandomEvents(4)
-fun getRandomEvents(count: Int): List<Event> {
-    return (0 until count)
-        .map {
-            val type = EventType.random()
-            Event(
-                type = type,
-                ownedAsset = if (type == EventType.COMPANY_BONUSES_ISSUED || type == EventType.COMPANY_BONUSES_WITHDRAWN) {
-                    OwnedAsset.Bonus(
-                        ValueAsset.Bonus(randomCurrency())
-                    )
-                } else {
-                    if (Random.nextBoolean()) {
-                        OwnedAsset.Discount.Currency(
-                            ValueAsset.Currency.Ruble(randomCurrency())
-                        )
-                    } else {
-                        OwnedAsset.Discount.Percent(
-                            randomPercent()
-                        )
-                    }
-                },
-                company = Companies.random(),
-                user = Users.random(),
-                timestamp = randomTimestamp().toBigInteger()
-            )
-        }
-        .sortedBy { it.timestamp }
 }

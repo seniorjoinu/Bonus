@@ -22,13 +22,17 @@ sealed class RewardImage {
     ) : RewardImage()
 }
 
+enum class RewardState {
+    PURCHASED, USED, ACCEPTED
+}
+
 sealed class Reward {
     // warning: do not pop up similar properties!
     data class Custom(
         val id: RewardId,
         val imageId: RewardImageId,
         val ownerId: UserId,
-        val used: Boolean = false
+        val state: RewardState
     ) : Reward()
 
     data class Common(
@@ -36,6 +40,6 @@ sealed class Reward {
         val ownerId: UserId,
         val ofCompanyId: CompanyId,
         val amount: OwnedAsset.Discount.Currency,
-        val used: Boolean = false
+        val state: RewardState
     ) : Reward()
 }

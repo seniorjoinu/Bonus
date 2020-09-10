@@ -1,23 +1,25 @@
 package es.bonus.android.components
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ContextAmbient
-import androidx.compose.ui.unit.sp
 import androidx.ui.tooling.preview.Preview
-import es.bonus.android.data.OwnedAsset
+import es.bonus.android.data.*
 import es.bonus.android.features.*
-import es.bonus.android.prettyTimestamp
 import es.bonus.android.ui.BonusTheme
-import es.bonus.android.ui.Colors
 
 @Composable
-fun EventTable(events: List<Event>, ofEntity: EventEntity, mod: Modifier = Modifier) {
+fun EventTable(
+    events: List<Event>,
+    users: Map<UserId, User>,
+    companies: Map<CompanyId, Company>,
+    rewards: Map<RewardId, Reward>,
+    rewardImages: Map<RewardImageId, RewardImage>,
+    exchangeOffers: Map<ExchangeOfferId, ExchangeOffer>,
+    ofEntity: EventEntity,
+    mod: Modifier = Modifier
+) {
     val entries = events.map { TableData.Simple(it) }
 
     TableView(
@@ -27,18 +29,41 @@ fun EventTable(events: List<Event>, ofEntity: EventEntity, mod: Modifier = Modif
     ) { event, contrastColor ->
         val prefixText: String
         val suffixText: String
+        val bonuses: OwnedAsset.Bonus
 
         when (ofEntity) {
-            EventEntity.COMPANY -> when (event.type) {
-                EventType.COMPANY_BONUSES_ISSUED -> {
+            EventEntity.COMPANY -> when (event) {
+                is Event.BonusesIssued -> {
                     prefixText = "issued "
-                    suffixText = " to ${event.user.username}"
+                    suffixText = " to ${users[event.toUserId]!!.username}"
+                    bonuses = event.amount.bonuses.toOwnedAsset()
                 }
-                EventType.COMPANY_BONUSES_WITHDRAWN -> {
-                    prefixText = "withdrawn "
-                    suffixText = " from ${event.user.username}"
+                is Event.RewardPurchased -> {
+                    val reward = rewards[event.rewardId]!!
+                    bonuses = event.price.bonuses.toOwnedAsset()
+
+                    when (reward) {
+                        is Reward.Custom -> {
+                            prefixText = "${users[reward.ownerId]} spent "
+                            suffixText = when (rewardImages[reward.imageId]!!) {
+                                is RewardImage.Discount -> " for a discount"
+                                is RewardImage.Gift -> " for a gift"
+                            }
+                        }
+                        is Reward.Common -> {
+                            prefixText = "${users[reward.ownerId]} spent "
+                            suffixText = " for a discount"
+                        }
+                    }
                 }
-                EventType.CUSTOMER_REWARD_PURCHASED -> {
+                is Event.RewardAccepted -> {
+                    val reward = rewards[event.rewardId]!!
+
+                    when (reward) {
+
+                    }
+                    bonuses = reward.bonuses.toOwnedAsset()
+
                     prefixText = ""
                     suffixText = when (event.ownedAsset) {
                         is OwnedAsset.Discount,

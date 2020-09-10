@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageAsset
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import es.bonus.android.GLOBAL_HOR_PADDING
 import es.bonus.android.data.bonuses
-import es.bonus.android.features.Companies
+import es.bonus.android.data.dummySetup
 import es.bonus.android.features.Company
 import es.bonus.android.ui.BonusTheme
 import es.bonus.android.ui.Colors
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun CompanyListItemView(
@@ -115,18 +115,13 @@ fun CompanyListItemView(
 @Composable
 @Preview
 fun CompanyListItemViewPreview() {
-    val context = ContextAmbient.current
-    Companies.init(context)
+    val (client1, _) = dummySetup()
+    val companies = runBlocking { client1.getCompanies(emptyList()).unwrap() }
 
     BonusTheme {
         Column {
-            CompanyListItemView(Companies.mcDoodles)
-            CompanyListItemView(Companies.vapeShop) {
-                OwnedAssetView(
-                    ownedAsset = 200.bonuses.toOwnedAsset()
-                )
-            }
-            CompanyListItemView(Companies.beatifulCompany) {
+            CompanyListItemView(company = companies.first())
+            CompanyListItemView(company = companies.last()) {
                 OwnedAssetView(
                     ownedAsset = 200.bonuses.toOwnedAsset()
                 )
